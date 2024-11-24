@@ -6,4 +6,3 @@ Para compilar:
   
 Para ejecutar:  
 ```SBR-FC.exe baseDeConocimiento baseDeHechos```
-
