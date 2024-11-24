@@ -1,8 +1,12 @@
-# Sistemas basados en reglas con encadenamiento hacia atrás  
-## Sistemas inteligentes - Curso 24/25 - Universidad de Murcia  
+## Sistemas basados en reglas con encadenamiento hacia atrás  
+#### Sistemas inteligentes - Curso 24/25 - Universidad de Murcia  
 
 Para compilar:  
-```make``  
+```bash
+make
+```  
   
 Para ejecutar:  
-```SBR-FC.exe baseDeConocimiento baseDeHechos```
+```bash
+SBR-FC.exe baseDeConocimiento baseDeHechos
+```
