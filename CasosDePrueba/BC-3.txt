@@ -1,0 +1,8 @@
+7
+R1: Si ant2-3 Entonces condExp, FC=0.5 
+R2: Si antMas3 Entonces condExp, FC=0.9 
+R3: Si cond2-3h Entonces condCansado, FC=0.5 
+R4: Si condMas3 Entonces condCansado, FC=1 
+R5: Si condExp y condNoSolo Entonces condCaus, FC=-0.5
+R6: Si condCansado Entonces condCaus, FC=0.5 
+R7: Si condJoven o condBebido Entonces condCaus, FC=0.7
