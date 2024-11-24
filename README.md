@@ -1,5 +1,5 @@
 ## Sistemas basados en reglas con encadenamiento hacia atrás  
-#### Sistemas inteligentes - Curso 24/25 - Universidad de Murcia  
+### Sistemas inteligentes - Curso 24/25 - Universidad de Murcia  
 
 Para compilar:  
 ```bash
