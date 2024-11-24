@@ -1,0 +1,43 @@
+ Resolucion del problema mediante un SBR-FC con encadenamiento hacia atrás para los ficheros: BC-2.txt y BH-2-GanaEST.txt
+ Hecho objetivo del problema: ganaEST.
+ El proceso de inferencia seguido para obtener la solucion es el siguiente:
+
+ Ficheros utilizados
+ Base de Conocimiento: BC-2.txt
+ Base de Hechos: BH-2-GanaEST.txt
+
+ Comenzamos el proceso de inferencia
+
+Verificando la meta del programa: ganaEST
+{R1, R4, R6}
+Regla seleccionada: R1
+Nuevas metas = {arbMod}
+Seleccionamos una nueva meta: arbMod
+Verificando la meta del programa: arbMod
+Meta conseguida--> arbMod con FC: 1 (Esta en BH)
+R1 (regla activada)
+	Caso 1: (arbMod), FC: 1
+	Caso 3: (arbMod), FC: 0.4
+Regla seleccionada: R4
+Nuevas metas = {publicoEqui}
+Seleccionamos una nueva meta: publicoEqui
+Verificando la meta del programa: publicoEqui
+Meta conseguida--> publicoEqui con FC: 0.35 (Esta en BH)
+R4 (regla activada)
+	Caso 1: (publicoEqui), FC: 0.35
+	Caso 3: (publicoEqui), FC: -0.1925
+Regla seleccionada: R6
+Nuevas metas = {les2pivEST}
+Seleccionamos una nueva meta: les2pivEST
+Verificando la meta del programa: les2pivEST
+Meta conseguida--> les2pivEST con FC: 1 (Esta en BH)
+R6 (regla activada)
+	Caso 1: (les2pivEST), FC: 1
+	Caso 3: (les2pivEST), FC: -0.6
+Caso 2: ganaEST, FC: -0.461628
+Meta alcanzada --> ganaEST con FC: -0.461628
+
+|Meta|
+Meta: ganaEST
+Se ha alcanzado la meta
+Factor de certeza: -0.461628
