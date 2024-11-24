@@ -55,26 +55,22 @@ double resolverReglaCaso3(Regla regla){
 }
 
 double resolverReglaCaso2(list<Regla> reglas){
+    if (reglas.empty()) return 0.0;
 
     double factorCertezaAnterior = reglas.begin()->factorCertezaConsecuente;
-    double factorCertezaActual = 0;   
 
-    auto it = reglas.begin();
-    it++;
-    for (; it != reglas.end(); it++){
-        factorCertezaActual = it->factorCertezaConsecuente;
-        
-        if (factorCertezaAnterior >= 0 && factorCertezaActual >= 0){
+    for (auto it = ++reglas.begin(); it != reglas.end(); ++it) {
+        double factorCertezaActual = it->factorCertezaConsecuente;
+
+        if (factorCertezaAnterior >= 0 && factorCertezaActual >= 0) {
             factorCertezaAnterior += factorCertezaActual * (1.0 - factorCertezaAnterior);
-        }
-        else if (factorCertezaAnterior <= 0 && factorCertezaActual <= 0){
+        } else if (factorCertezaAnterior <= 0 && factorCertezaActual <= 0) {
             factorCertezaAnterior += factorCertezaActual * (1.0 + factorCertezaAnterior);
-        }
-        else{
+        } else {
             factorCertezaAnterior = (factorCertezaAnterior + factorCertezaActual) / (1.0 - min(abs(factorCertezaAnterior), abs(factorCertezaActual)));
-        }        
+        }
     }
-    return factorCertezaAnterior;  
+    return factorCertezaAnterior; 
 }
 
 void añadirHecho(string idHecho, float factorCerteza, list<Hecho> &baseHechos){
