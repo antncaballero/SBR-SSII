@@ -128,5 +128,5 @@ string generarNombreFicheroResultado(const string& archivoBC, const string& arch
     string nombreBH = (posBH == string::npos) ? archivoBH : archivoBH.substr(posBH + 1);
     nombreBC = nombreBC.substr(0, nombreBC.find_last_of('.'));
     nombreBH = nombreBH.substr(0, nombreBH.find_last_of('.'));
-    return nombreBC + nombreBH + ".txt";
+    return "salidaLog_" + nombreBC + nombreBH + ".txt";
 }
