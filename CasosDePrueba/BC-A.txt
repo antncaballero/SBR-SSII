@@ -1,0 +1,6 @@
+5
+R1: Si tormenta o vientoFuerte Entonces peligroMod, FC=0.6 
+R2: Si fugaComb o corteEnerg Entonces falloMec, FC=0.85
+R3: Si entreSem y noVerano Entonces personalSuf, FC=-0.4
+R4: Si personalSuf Entonces aterEmerg, FC=0.5 
+R5: Si peligroMod y falloMec Entonces aterEmerg, FC=0.99

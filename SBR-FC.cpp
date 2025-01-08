@@ -62,7 +62,7 @@ double resolverReglaCaso1(Regla regla){
 
 double resolverReglaCaso3(Regla regla){
    double fc= regla.factorCerteza * max(0.0, regla.factorCertezaAntecedentes);
-   ficheroResultado <<"\tCaso 3: Factor de certeza de salida para la regla " << regla.id << " = " << fc << endl;
+   ficheroResultado <<"\tCaso 3: Factor de certeza para el consecuente de la regla " << regla.id <<", " << regla.consecuente << " = " << fc << endl;
    return fc;
 }
 
@@ -98,14 +98,13 @@ void addHecho(string idHecho, float factorCerteza, list<Hecho> &baseHechos){
     hecho.id = idHecho;
     hecho.factorCerteza = factorCerteza;
     baseHechos.push_back(hecho);
-
 }
 
-bool verificar(string meta, list<Hecho> &baseHechos, list<Regla> baseConocimiento){ 
+double inferirFc(string meta, list<Hecho> &baseHechos, list<Regla> baseConocimiento){ 
     
     ficheroResultado << "Verificando la meta " << meta << endl;
 
-    if (verificarHecho(meta, baseHechos)) return true; // Si la meta ya está en la base de hechos, se retorna verdadero
+    if (verificarHecho(meta, baseHechos)) return buscarFChecho(meta, baseHechos); // Si la meta ya está en la base de hechos, no hace falta buscar más, se devuelve su fc
     list<Regla> cc = equiparar(meta, baseConocimiento); // Se obtienen las reglas que tienen a la meta como consecuente
      
     for (auto it = cc.begin(); it != cc.end(); it++){     
@@ -115,37 +114,30 @@ bool verificar(string meta, list<Hecho> &baseHechos, list<Regla> baseConocimient
         for (string antecedente : regla.antecendentes) ficheroResultado << antecedente << " ";
         ficheroResultado << "}" << endl;
 
-        bool verificado = true;
         auto itAntecedentes = regla.antecendentes.begin();
-        while (itAntecedentes != regla.antecendentes.end() && verificado){
-            
+        while (itAntecedentes != regla.antecendentes.end()){      
             string nuevaMeta = (*itAntecedentes);
-            verificado = verificar(nuevaMeta, baseHechos, baseConocimiento);
+            inferirFc(nuevaMeta, baseHechos, baseConocimiento);
             itAntecedentes++;
-        }
-        if (verificado){
-            ficheroResultado << "Regla " << regla.id << " activada" << endl;
-            if (regla.antecendentes.size() > 1) regla.factorCertezaAntecedentes = resolverReglaCaso1(regla);
-            else{
-                regla.factorCertezaAntecedentes = buscarFChecho(regla.antecendentes.front(), baseHechos);
-            }
-            regla.factorCertezaConsecuente = resolverReglaCaso3(regla);
-        }
+        } 
+        ficheroResultado << "Regla " << regla.id << " activada" << endl;
+        if (regla.antecendentes.size() > 1) regla.factorCertezaAntecedentes = resolverReglaCaso1(regla);
+        else regla.factorCertezaAntecedentes = buscarFChecho(regla.antecendentes.front(), baseHechos);
+        
+        regla.factorCertezaConsecuente = resolverReglaCaso3(regla);   
     }
+    double factorCertezaMeta;
     if (cc.size() > 1){
         ficheroResultado << "Se resuelve el conjunto conflicto para la meta "<< meta << " con el caso 2" << endl;
-        double factorCertezaMeta = resolverReglaCaso2(meta, cc);
-        addHecho(meta, factorCertezaMeta, baseHechos);
-        ficheroResultado << "La meta " << meta << " ha sido verificada con factor de certeza: " << factorCertezaMeta << endl;
-        return true;
+        factorCertezaMeta = resolverReglaCaso2(meta, cc);
+        addHecho(meta, factorCertezaMeta, baseHechos);      
     }
-    else{
-        double factorCertezaMeta = cc.begin()->factorCertezaConsecuente;
+    else {
+        factorCertezaMeta = cc.begin()->factorCertezaConsecuente; // es 0 si no hay reglas en el CC, se podría añadir una comparación para ver si CC.isEmpty(), pero a efectos prácticos da el mismo resultado
         addHecho(meta, factorCertezaMeta, baseHechos);
-        ficheroResultado << "La meta " << meta << " ha sido verificada con factor de certeza: " << factorCertezaMeta << endl;
-        return true;
     }
-    return false;
+    ficheroResultado << "La meta " << meta << " ha sido verificada con factor de certeza: " << factorCertezaMeta << endl;
+    return factorCertezaMeta;
 }
 
 int main(int argc, char const *argv[])
@@ -169,17 +161,8 @@ int main(int argc, char const *argv[])
     ficheroResultado << "Objetivo: " << objetivo << endl;
     ficheroResultado << "\nProceso de inferencia:\n" << endl;
 
-    if (verificar(objetivo, baseHechos, baseConocimiento)){
-        cout << "La meta " << objetivo << " ha sido verificada ";
-        for (Hecho h : baseHechos){
-            if (h.id == objetivo){
-                cout << "con factor de certeza: " << h.factorCerteza << endl;
-            }
-        }
-    }
-    else{
-        cout << "La meta " << objetivo << " no ha sido verificada." << endl;
-    }
+    inferirFc(objetivo, baseHechos, baseConocimiento);
+    cout << "La meta " << objetivo << " ha sido verificada con factor de certeza: " << buscarFChecho(objetivo, baseHechos) << endl;
 
     ficheroResultado.close();
     return 0;
